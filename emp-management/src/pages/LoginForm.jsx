@@ -48,7 +48,7 @@ const LoginForm = () => {
   else if (role === "admin") {
     if (username === "Admin" && password === "Admin") {
       sessionStorage.setItem('adminLoggedIn', true);
-      navigate("/AdminPage");
+      navigate("/AllEmployees");
     } else {
       setError('Invalid credentials for admin');
     }

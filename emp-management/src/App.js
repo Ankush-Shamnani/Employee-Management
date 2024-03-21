@@ -1,6 +1,6 @@
 import './App.css';
 import LoginForm from './pages/LoginForm';
-import AdminPage from './pages/AdminPage';
+import RegisterEmployee from './pages/RegisterEmployee';
 import EmployeePage from './pages/EmployeePage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LeaveRequest from './pages/LeaveRequest';
@@ -13,7 +13,7 @@ function App() {
         <Router>
       <Routes>
         <Route path="/" element={<LoginForm />} />
-        <Route path="/AdminPage" element={<AdminPage />} />
+        <Route path="/RegisterEmployee" element={ <RegisterEmployee/>} />
         <Route path="/EmployeePage" element={<EmployeePage />} />
         <Route path="/LeaveRequest" element={<LeaveRequest/>} />
         <Route path='/AllEmployees' element ={<AllEmployees/>}/>

@@ -210,6 +210,17 @@ button:hover {
   margin-right: 0;
 }
 
+.delete-success-popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: rgba(244, 113, 113, 0.7); /* Transparent black background */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+
 .leave-request-table {
   margin-bottom: 20px;
   background-color: #f9f9f9;

@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserCircle,
   faSignOutAlt,
-  faHome,
   faEdit,
   faTrash,
   faPlus,
@@ -28,14 +27,9 @@ const AllEmployees = () => {
 
   const navigate = useNavigate();
   const [showLogoutMenu, setShowLogoutMenu] = useState(false);
-  const [showEmployeeForm, setShowEmployeeForm] = useState(false);
   const [employees, setEmployees] = useState([]);
-  const [newEmployeeFirstName, setNewEmployeeFirstName] = useState("");
-  const [newEmployeeLastName, setNewEmployeeLastName] = useState("");
-  const [newEmployeeEmail, setNewEmployeeEmail] = useState("");
-  const [newEmployeeJoiningDate, setNewEmployeeJoiningDate] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingEmployeeId, setEditingEmployeeId] = useState(null);
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
+ 
 
   const fetchData = useCallback(async () => {
     try {
@@ -60,68 +54,14 @@ const AllEmployees = () => {
   };
 
   const handleAddEmployee = () => {
-    setShowEmployeeForm(true);
+    navigate("/RegisterEmployee");
   };
 
-  const handleChangeFirstName = (e) => {
-    setNewEmployeeFirstName(e.target.value);
-  };
-
-  const handleChangeLastName = (e) => {
-    setNewEmployeeLastName(e.target.value);
-  };
-
-  const handleChangeEmail = (e) => {
-    setNewEmployeeEmail(e.target.value);
-  };
-
-  const handleChangeJoiningDate = (e) => {
-    setNewEmployeeJoiningDate(e.target.value);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const employeeData = {
-      firstName: newEmployeeFirstName,
-      lastName: newEmployeeLastName,
-      email: newEmployeeEmail,
-      joiningDate: newEmployeeJoiningDate,
-    };
-
-    try {
-      if (isEditing) {
-        await axios.put(
-          `http://localhost:5000/employees/${editingEmployeeId}`,
-          employeeData
-        );
-      } else {
-        await axios.post(`http://localhost:5000/employees`, employeeData);
-      }
-
-      setNewEmployeeFirstName("");
-      setNewEmployeeLastName("");
-      setNewEmployeeEmail("");
-      setNewEmployeeJoiningDate("");
-      setShowEmployeeForm(false);
-      setIsEditing(false);
-      setEditingEmployeeId(null);
-      fetchData();
-    } catch (error) {
-      console.error("Error saving employee:", error);
-    }
-  };
 
   const handleUpdate = (employeeId) => {
     const employee = employees.find((e) => e._id === employeeId);
     if (employee) {
-      setNewEmployeeFirstName(employee.firstName);
-      setNewEmployeeLastName(employee.lastName);
-      setNewEmployeeEmail(employee.email);
-      setNewEmployeeJoiningDate(employee.joiningDate.split("T")[0]);
-      setEditingEmployeeId(employeeId);
-      setIsEditing(true);
-      setShowEmployeeForm(true);
+      navigate("/RegisterEmployee", {state: employee})
     }
   };
 
@@ -133,6 +73,10 @@ const AllEmployees = () => {
     if (isConfirmed) {
       try {
         await axios.delete(`http://localhost:5000/employees/${employeeId}`);
+        setShowDeletePopup(true);
+        setTimeout(() => {
+          setShowDeletePopup(false)
+        }, 1800);
         fetchData();
       } catch (error) {
         console.error("Error deleting employee:", error);
@@ -147,12 +91,10 @@ const AllEmployees = () => {
       <h1>Welcome Admin</h1>
 
       <div className="navbar">
-        <div className="nav-options">
-          <Link to="/AdminPage">
-            <FontAwesomeIcon icon={faHome} /> Home
-          </Link>
+      <div className="nav-options">
           <Link to="/AllEmployees">Show All Employees</Link>
           <Link to="/LeaveRequest">Leave Requests</Link>
+          <Link to="/RegisterEmployee">Register Employee</Link>
         </div>
         <div className="profile-menu">
           <div className="profile-photo" onClick={toggleLogoutMenu}>
@@ -168,59 +110,7 @@ const AllEmployees = () => {
         </div>
       </div>
 
-      {showEmployeeForm ? (
-        <div className="employee-registration-form">
-          <h2>Employee Registration</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="input-field">
-              <label htmlFor="firstName">First Name:</label>
-              <input
-                type="text"
-                id="firstName"
-                name="firstName"
-                value={newEmployeeFirstName}
-                onChange={handleChangeFirstName}
-                required
-              />
-            </div>
-            <div className="input-field">
-              <label htmlFor="lastName">Last Name:</label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                value={newEmployeeLastName}
-                onChange={handleChangeLastName}
-                required
-              />
-            </div>
-            <div className="input-field">
-              <label htmlFor="joiningDate">Joining Date:</label>
-              <input
-                type="date"
-                id="joiningDate"
-                name="joiningDate"
-                value={newEmployeeJoiningDate}
-                onChange={handleChangeJoiningDate}
-                required
-              />
-            </div>
-            <div className="input-field">
-              <label htmlFor="email">Email:</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={newEmployeeEmail}
-                onChange={handleChangeEmail}
-                required
-              />
-            </div>
-            <button type="submit">Submit</button>
-          </form>
-        </div>
-      ) : (
-        <div className="employee-table">
+      <div className="employee-table">
           <button className="add-employee-button" onClick={handleAddEmployee}>
             Add Employee <FontAwesomeIcon icon={faPlus} />
           </button>
@@ -267,6 +157,10 @@ const AllEmployees = () => {
               </table>
             </div>
           </center>
+        </div>
+        {showDeletePopup && (
+        <div className="delete-success-popup">
+          Employee successfully deleted!
         </div>
       )}
     </div>

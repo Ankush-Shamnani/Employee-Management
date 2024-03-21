@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserCircle,
   faSignOutAlt,
-  faHome,
   faCheck,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
@@ -131,12 +130,10 @@ const LeaveRequest = () => {
       <h1>Welcome Admin</h1>
 
       <div className="navbar">
-        <div className="nav-options">
-          <Link to="/AdminPage">
-            <FontAwesomeIcon icon={faHome} /> Home
-          </Link>
+      <div className="nav-options">
           <Link to="/AllEmployees">Show All Employees</Link>
           <Link to="/LeaveRequest">Leave Requests</Link>
+          <Link to="/RegisterEmployee">Register Employee</Link>
         </div>
         <div className="profile-menu">
           <div className="profile-photo" onClick={toggleLogoutMenu}>
