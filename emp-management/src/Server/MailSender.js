@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
   secure: false,
   auth: {
     user: "anku.shamnani@gmail.com", // SMTP username
-    pass: "FA0456CACA94B6DCC910E4147D712D139682" // SMTP password
+    pass: "96F6D0868675C8E4A5CD82FA9662C5DCD853" // SMTP password
   }
 });
 
